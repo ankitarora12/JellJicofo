@@ -1,0 +1,209 @@
+Preparing to Execute Maven in Debug Mode
+Listening for transport dt_socket at address: 8000
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building jicofo 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[WARNING] The POM for com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar:1.0_jdk5 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:java (default-cli) @ jicofo ---
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: Successfully started LibJitsi using as implementation: org.jitsi.impl.libjitsi.LibJitsiOSGiImpl
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: org.jitsi.jicofo.HOSTNAME=localhost
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.runtime.name=Java(TM) SE Runtime Environment
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.boot.library.path=/opt/java-8-oracle/jre/lib/amd64
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.version=25.77-b03
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: maven.multiModuleProjectDirectory=/home/nishant/Devworkspaces/Jell-jitsi/Jell-Jitsi/jicofo
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.vendor=Oracle Corporation
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vendor.url=http://java.oracle.com/
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: guice.disable.misplaced.annotation.check=true
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: path.separator=:
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: file.encoding.pkg=sun.io
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: user.country=IN
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.java.launcher=SUN_STANDARD
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.os.patch.level=unknown
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: net.java.sip.communicator.service.media.DISABLE_AUDIO_SUPPORT=true
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.specification.name=Java Virtual Machine Specification
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: user.dir=/home/nishant/Devworkspaces/Jell-jitsi/Jell-Jitsi/jicofo
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: org.jitsi.jicofo.FOCUS_USER_PASSWORD=**********
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.runtime.version=1.8.0_77-b03
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.awt.graphicsenv=sun.awt.X11GraphicsEnvironment
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.endorsed.dirs=/opt/java-8-oracle/jre/lib/endorsed
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: os.arch=amd64
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.io.tmpdir=/tmp
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: line.separator=
+
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.specification.vendor=Oracle Corporation
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: os.name=Linux
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: classworlds.conf=/opt/apache-maven-3.3.3/bin/m2.conf
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.jnu.encoding=UTF-8
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: net.java.sip.communicator.CONFIGURATION_FILE_IS_READ_ONLY=true
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: org.jitsi.jicofo.FOCUS_USER_DOMAIN=auth.jitsi.example.com
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.specification.name=Java Platform API Specification
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.class.version=52.0
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: org.jitsi.service.audionotifier.AudioNotifierService=org.jitsi.impl.neomedia.notify.AudioNotifierServiceImpl
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: os.version=3.19.0-58-generic
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: user.home=/home/nishant
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: user.timezone=Asia/Kolkata
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.awt.printerjob=sun.print.PSPrinterJob
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: org.jitsi.jicofo.FOCUS_USER_NAME=focus
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: file.encoding=UTF-8
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.specification.version=1.8
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: net.java.sip.communicator.service.media.DISABLE_VIDEO_SUPPORT=true
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: org.jitsi.jicofo.XMPP_DOMAIN=jitsi.example.com
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.class.path=/opt/apache-maven-3.3.3/boot/plexus-classworlds-2.5.2.jar
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: user.name=nishant
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.specification.version=1.8
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.java.command=org.codehaus.plexus.classworlds.launcher.Launcher exec:java -Dexec.args=--host=localhost  --domain=jitsi.example.com --secret=X --user_domain=auth.jitsi.example.com --user_name=focus --user_password=X -Djava.library.path=/opt/java-8-oracle
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.home=/opt/java-8-oracle/jre
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.arch.data.model=64
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: user.language=en
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.specification.vendor=Oracle Corporation
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: awt.toolkit=sun.awt.X11.XToolkit
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vm.info=mixed mode
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.version=1.8.0_77
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: securerandom.source=file:/dev/./urandom
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.ext.dirs=/opt/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.boot.class.path=/opt/java-8-oracle/jre/lib/resources.jar:/opt/java-8-oracle/jre/lib/rt.jar:/opt/java-8-oracle/jre/lib/sunrsasign.jar:/opt/java-8-oracle/jre/lib/jsse.jar:/opt/java-8-oracle/jre/lib/jce.jar:/opt/java-8-oracle/jre/lib/charsets.jar:/opt/java-8-oracle/jre/lib/jfr.jar:/opt/java-8-oracle/jre/classes
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vendor=Oracle Corporation
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: maven.home=/opt/apache-maven-3.3.3
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: file.separator=/
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: java.vendor.url.bug=http://bugreport.sun.com/bugreport/
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.io.unicode.encoding=UnicodeLittle
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.cpu.endian=little
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: exec.args=--host=localhost  --domain=jitsi.example.com --secret=YOURSECRET2 --user_domain=auth.jitsi.example.com --user_name=focus --user_password=YOURSECRET3 -Djava.library.path=/opt/java-8-oracle
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.desktop=gnome
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: sun.cpu.isalist=
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: Normal classloader
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: failed to find jitsi-defaults.properties with class loader, will continue without it.
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: Normal classloader
+May 03, 2016 12:51:01 PM org.jitsi.util.Logger info
+INFO: failed to find jitsi-default-overrides.properties with class loader, will continue without it.
+May 03, 2016 12:51:01 PM net.java.sip.communicator.util.Logger info
+INFO: Network Address Manager         ...[  STARTED ]
+May 03, 2016 12:51:01 PM net.java.sip.communicator.util.Logger info
+INFO: Network Address Manager Service ...[REGISTERED]
+May 03, 2016 12:51:01 PM net.java.sip.communicator.util.Logger info
+INFO: JiCoFo Version: JiCoFo 1.0.build.SVN
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Jibri requests in PENDING state will be timed out after: 30 seconds
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Bridge failure reset threshold: 300000
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Authentication lifetime: 86400000
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Authentication lifetime: 86400000
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Auth authority: org.jitsi.jicofo.auth.ClientAuthenticationImpl@539c9ba1
+May 03, 2016 12:51:02 PM org.eclipse.jetty.server.Server doStart
+INFO: jetty-8.1.16.v20140903
+May 03, 2016 12:51:02 PM org.eclipse.jetty.server.AbstractConnector doStart
+INFO: Started SelectChannelConnector@0.0.0.0:8888
+May 03, 2016 12:51:02 PM org.jitsi.util.Logger info
+INFO: client.authentication=client.key
+May 03, 2016 12:51:02 PM org.jitsi.util.Logger info
+INFO: org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false
+May 03, 2016 12:51:02 PM org.jitsi.util.Logger info
+INFO: net.java.sip.communicator.SC_HOME_DIR_NAME=.sip-communicator
+May 03, 2016 12:51:02 PM org.jitsi.util.Logger info
+INFO: net.java.sip.communicator.SC_HOME_DIR_LOCATION=/home/nishant
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Component org.jitsi.jicofo. config: 
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO:   ping interval: 10000 ms
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO:   ping timeout: 5000 ms
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO:   ping threshold: 3
+May 03, 2016 12:51:02 PM net.java.sip.communicator.util.Logger info
+INFO: Authentication lifetime: 86400000
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: New component discovered: focus.jitsi.example.com, null
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: New component discovered: conference.jitsi.example.com, null
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: MUC component discovered: conference.jitsi.example.com
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: New component discovered: auth.jitsi.example.com, Version[Prosody(0.9.1,Linux)@-71422654
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: Detected XMPP server version: Version[Prosody(0.9.1,Linux)@-71422654
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: Services re-discovery interval: 30000
+May 03, 2016 12:51:03 PM net.java.sip.communicator.util.Logger info
+INFO: XMPP provider reg state: RegistrationState=Registered
+May 03, 2016 12:51:03 PM org.jitsi.util.Logger info
+INFO: XMPP provider Jabber:focus@auth.jitsi.example.com/focus37922499868371@localhost connected (JID: focus@auth.jitsi.example.com/focus37922499868371)
