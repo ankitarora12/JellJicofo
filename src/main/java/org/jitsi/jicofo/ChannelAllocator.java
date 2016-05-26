@@ -29,6 +29,7 @@ import org.jitsi.jicofo.discovery.*;
 import org.jitsi.jicofo.util.*;
 import org.jitsi.protocol.xmpp.*;
 import org.jitsi.protocol.xmpp.colibri.*;
+import org.jitsi.protocol.xmpp.util.*;
 import org.jitsi.util.*;
 
 import java.util.*;
@@ -47,7 +48,7 @@ public class ChannelAllocator implements Runnable
      * working videobridge bridges.
      * FIXME: consider moving to OperationFailedException ?
      */
-    private final static int BRIDGE_FAILURE_ERR_CODE = 20;
+    final static int BRIDGE_FAILURE_ERR_CODE = 20;
 
     /**
      * The logger instance used in this class.
@@ -125,12 +126,6 @@ public class ChannelAllocator implements Runnable
                 OperationSetJitsiMeetTools.class);
     }
 
-    private OperationSetJingle getJingle()
-    {
-        return meetConference.getXmppProvider().getOperationSet(
-                OperationSetJingle.class);
-    }
-
     /**
      * Entry point for <tt>ChannelAllocator</tt> task.
      */
@@ -181,18 +176,10 @@ public class ChannelAllocator implements Runnable
             //FIXME: retry ? sometimes it's just timeout
             logger.error(" Client : "+ clientName +" : Failed to allocate channels for " + address, e);
 
-            // Notify users about bridge is down event
-            ChatRoom chatRoom = meetConference.getChatRoom();
-            if (BRIDGE_FAILURE_ERR_CODE == e.getErrorCode() && chatRoom != null)
-            {
-                OperationSetJitsiMeetTools meetTools = getMeetTools();
-                if (meetTools != null)
-                {
-                    meetTools.sendPresenceExtension(
-                            chatRoom, new BridgeIsDownPacketExt());
-                }
-            }
-            // Cancel - no channels allocated
+            // Notify conference about failure
+            meetConference.onChannelAllocationFailed(this, e);
+
+            // Cancel this thread - nothing to be done after failure
             return;
         }
         /*
@@ -226,10 +213,12 @@ public class ChannelAllocator implements Runnable
         }
         else
         {
+            OperationSetJingle jingle = meetConference.getJingle();
             boolean ack;
-            if (!reInvite)
+            JingleSession jingleSession = newParticipant.getJingleSession();
+            if (!reInvite || jingleSession == null)
             {
-                ack = getJingle().initiateSession(
+                ack = jingle.initiateSession(
                         newParticipant.hasBundleSupport(),
                         address,
                         offer,
@@ -238,9 +227,9 @@ public class ChannelAllocator implements Runnable
             }
             else
             {
-                ack = getJingle().replaceTransport(
+                ack = jingle.replaceTransport(
                         newParticipant.hasBundleSupport(),
-                        newParticipant.getJingleSession(),
+                        jingleSession,
                         offer,
                         startMuted);
             }
@@ -284,7 +273,7 @@ public class ChannelAllocator implements Runnable
         List<ContentPacketExtension> contents = new ArrayList<>();
 
         JitsiMeetConfig config = meetConference.getConfig();
-        
+
         boolean disableIce = !newParticipant.hasIceSupport();
         boolean useDtls = newParticipant.hasDtlsSupport();
         boolean useRtx
@@ -293,7 +282,8 @@ public class ChannelAllocator implements Runnable
         if (newParticipant.hasAudioSupport())
         {
             contents.add(
-                    JingleOfferFactory.createAudioContent(disableIce, useDtls));
+                    JingleOfferFactory.createAudioContent(
+                            disableIce, useDtls, config.stereoEnabled()));
         }
 
         if (newParticipant.hasVideoSupport())
@@ -340,7 +330,6 @@ public class ChannelAllocator implements Runnable
             List<ContentPacketExtension> contents)
         throws OperationFailedException
     {
-    	
         if (colibriConference.isDisposed())
         {
             // Nope - the conference has been disposed, before the thread got
@@ -365,7 +354,9 @@ public class ChannelAllocator implements Runnable
 
                 // Check for enforced bridge
 
-                if (!StringUtils.isNullOrEmpty(config.getEnforcedVideobridge()))
+                String enforcedVideoBridge = config.getEnforcedVideobridge();
+                if (!StringUtils.isNullOrEmpty(enforcedVideoBridge)
+                    && bridgeSelector.isJvbOnTheList(enforcedVideoBridge))
                 {
                     bridge = config.getEnforcedVideobridge();
                     logger.info(" Client : "+ clientName +
@@ -496,12 +487,20 @@ public class ChannelAllocator implements Runnable
                             ColibriConferenceIQ             peerChannels)
     {
         boolean useBundle = newParticipant.hasBundleSupport();
-        String clientName = clientAuthenticationAuthority.getClientNameFromSessionMap(meetConference.getRoomName());
+		String clientName = clientAuthenticationAuthority.getClientNameFromSessionMap(meetConference.getRoomName());
+        MediaSSRCMap conferenceSSRCs
+            = meetConference.getAllSSRCs(
+                    reInvite ? newParticipant : null);
+
+        MediaSSRCGroupMap conferenceSSRCGroups
+            = meetConference.getAllSSRCGroups(
+                    reInvite ? newParticipant : null);
 
         for (ContentPacketExtension cpe : contents)
         {
+            String contentName = cpe.getName();
             ColibriConferenceIQ.Content colibriContent
-                = peerChannels.getContent(cpe.getName());
+                = peerChannels.getContent(contentName);
 
             if (colibriContent == null)
                 continue;
@@ -636,7 +635,6 @@ public class ChannelAllocator implements Runnable
 
                     try
                     {
-                        String contentName = colibriContent.getName();
                         SourcePacketExtension ssrcCopy = ssrcPe.copy();
 
                         // FIXME: not all parameters are used currently
@@ -673,8 +671,7 @@ public class ChannelAllocator implements Runnable
 
                 // Include all peers SSRCs
                 List<SourcePacketExtension> mediaSources
-                    = meetConference.getAllSSRCs(
-                            cpe.getName(), reInvite ? newParticipant : null);
+                    = conferenceSSRCs.getSSRCsForMedia(contentName);
 
                 for (SourcePacketExtension ssrc : mediaSources)
                 {
@@ -691,13 +688,12 @@ public class ChannelAllocator implements Runnable
                 }
 
                 // Include SSRC groups
-                List<SourceGroupPacketExtension> sourceGroups
-                    = meetConference.getAllSSRCGroups(
-                            cpe.getName(), reInvite ? newParticipant : null);
+                List<SSRCGroup> sourceGroups
+                    = conferenceSSRCGroups.getSSRCGroupsForMedia(contentName);
 
-                for(SourceGroupPacketExtension ssrcGroup : sourceGroups)
+                for(SSRCGroup ssrcGroup : sourceGroups)
                 {
-                    rtpDescPe.addChildExtension(ssrcGroup);
+                    rtpDescPe.addChildExtension(ssrcGroup.getPacketExtension());
                 }
             }
         }

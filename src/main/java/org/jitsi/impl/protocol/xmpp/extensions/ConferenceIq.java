@@ -349,20 +349,4 @@ public class ConferenceIq
             return getAttributeAsString(VALUE_ATTR_NAME);
         }
     }
-
-	@Override
-	public String toString() {
-		return "ConferenceIq [room=" + room + ", ready=" + ready + ", focusJid=" + focusJid + ", sessionId=" + sessionId
-				+ ", machineUID=" + machineUID + ", identity=" + identity + ", isReady()=" + isReady() + ", getRoom()="
-				+ getRoom() + ", getFocusJid()=" + getFocusJid() + ", getProperties()=" + getProperties()
-				+ ", getPropertiesMap()=" + getPropertiesMap() + ", getSessionId()=" + getSessionId()
-				+ ", getMachineUID()=" + getMachineUID() + ", getIdentity()=" + getIdentity() + ", hasChildren()="
-				+ hasChildren() + ", getChildElementXML()=" + getChildElementXML() + ", getType()=" + getType()
-				+ ", toXML()=" + toXML() + ", getPacketID()=" + getPacketID() + ", getTo()=" + getTo() + ", getFrom()="
-				+ getFrom() + ", getError()=" + getError() + ", getExtensions()=" + getExtensions()
-				+ ", getPropertyNames()=" + getPropertyNames() + ", getExtensionsXML()=" + getExtensionsXML()
-				+ ", getXmlns()=" + getXmlns() + ", hashCode()=" + hashCode() + ", getClass()=" + getClass()
-				+ ", toString()=" + super.toString() + "]";
-	}
-    
 }

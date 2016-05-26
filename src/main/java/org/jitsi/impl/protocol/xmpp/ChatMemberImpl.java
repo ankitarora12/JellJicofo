@@ -16,23 +16,20 @@
  * limitations under the License.
  */
 package org.jitsi.impl.protocol.xmpp;
-
 import org.jitsi.jicofo.JitsiMeetGlobalConfig;
 import org.jitsi.jicofo.auth.ClientAuthenticationAuthority;
-import org.jitsi.protocol.xmpp.XmppChatMember;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smackx.muc.Occupant;
 
-import net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl;
-import net.java.sip.communicator.impl.protocol.jabber.extensions.jitsimeet.VideoMutedExtension;
-import net.java.sip.communicator.service.protocol.ChatRoom;
-import net.java.sip.communicator.service.protocol.ChatRoomMember;
-import net.java.sip.communicator.service.protocol.ChatRoomMemberRole;
-import net.java.sip.communicator.service.protocol.Contact;
-import net.java.sip.communicator.service.protocol.PresenceStatus;
-import net.java.sip.communicator.service.protocol.ProtocolProviderService;
-import net.java.sip.communicator.service.protocol.globalstatus.GlobalStatusEnum;
-import net.java.sip.communicator.util.Logger;
+import net.java.sip.communicator.impl.protocol.jabber.*;
+import net.java.sip.communicator.impl.protocol.jabber.extensions.jitsimeet.*;
+import net.java.sip.communicator.service.protocol.*;
+import net.java.sip.communicator.service.protocol.globalstatus.*;
+import net.java.sip.communicator.util.*;
+
+import org.jitsi.impl.protocol.xmpp.extensions.*;
+import org.jitsi.protocol.xmpp.*;
+
+import org.jivesoftware.smack.packet.*;
+import org.jivesoftware.smackx.muc.*;
 
 /**
  * Stripped Smack implementation of {@link ChatRoomMember}.
@@ -80,11 +77,13 @@ public class ChatMemberImpl
      */
     private Presence presence;
 
-    private ChatRoomMemberRole role;
-    
-    
-    private ClientAuthenticationAuthority clientAuthenticationAuthority;
+    /**
+     * Indicates whether or not this MUC member is a robot.
+     */
+    private boolean robot = false;
 
+    private ChatRoomMemberRole role;
+ 	private ClientAuthenticationAuthority clientAuthenticationAuthority;
     /**
      * Stores video muted status if any.
      */
@@ -205,13 +204,32 @@ public class ChatMemberImpl
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isRobot()
+    {
+        return robot;
+    }
+
+    /**
      * Does presence processing.
      *
      * @param presence the instance of <tt>Presence</tt> packet extension sent
      *                 by this chat member.
+     *
+     * @throws IllegalArgumentException if given <tt>Presence</tt> does not
+     *         belong to this <tt>ChatMemberImpl</tt>.
      */
     void processPresence(Presence presence)
     {
+        if (!address.equals(presence.getFrom()))
+        {
+            throw new IllegalArgumentException(
+                    String.format("Presence for another member: %s, my jid: %s",
+                            presence.getFrom(), address));
+        }
+
         this.presence = presence;
 
         VideoMutedExtension videoMutedExt
@@ -232,5 +250,31 @@ public class ChatMemberImpl
                 videoMuted = newStatus;
             }
         }
+
+        UserInfoPacketExt userInfoPacketExt
+            = (UserInfoPacketExt)
+                presence.getExtension(
+                        UserInfoPacketExt.ELEMENT_NAME,
+                        UserInfoPacketExt.NAMESPACE);
+        if (userInfoPacketExt != null)
+        {
+            Boolean newStatus = userInfoPacketExt.isRobot();
+            if (newStatus != null && this.robot != newStatus)
+            {
+                logger.debug(getContactAddress() +" robot: " + robot);
+
+                this.robot = newStatus;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "ChatMember[%s, jid: %s]@%s", address, memberJid, hashCode());
     }
 }

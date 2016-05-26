@@ -46,7 +46,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class ColibriTest
 {
-    static OSGiHandler osgi = new OSGiHandler();
+    static OSGiHandler osgi = OSGiHandler.getInstance();
 
     @BeforeClass
     public static void setUpClass()
@@ -87,11 +87,10 @@ public class ColibriTest
         colibriConf.setJitsiVideobridge(
             testConference.getMockVideoBridge().getBridgeJid());
 
-        List<ContentPacketExtension> contents
-            = new ArrayList<ContentPacketExtension>();
+        List<ContentPacketExtension> contents = new ArrayList<>();
 
         ContentPacketExtension audio
-            = JingleOfferFactory.createAudioContent(false, true);
+            = JingleOfferFactory.createAudioContent(false, true, false);
         ContentPacketExtension video
             = JingleOfferFactory.createVideoContent(false, true, false, -1, -1);
         ContentPacketExtension data
@@ -143,6 +142,8 @@ public class ColibriTest
         Thread.sleep(1000);
 
         assertEquals(0 , mockBridge.getChannelsCount());
+
+        testConference.stop();
     }
 
     private static int countChannels(ColibriConferenceIQ conferenceIq)

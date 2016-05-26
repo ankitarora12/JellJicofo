@@ -54,13 +54,6 @@ public class JitsiMeetConfig
         = "disableAdaptiveSimulcast";
 
     /**
-     * The name the configuration property used to configure videobridge
-     * instance. It will be used when all auto-detected instances fail(or if we
-     * fail to detect any bridges at all).
-     */
-    public static final String BRIDGE_PNAME = "bridge";
-
-    /**
      * The name of channel last N configuration property. Should be non-negative
      * number. Pass <tt>-1</tt> to disable last N functionality.
      */
@@ -118,6 +111,16 @@ public class JitsiMeetConfig
      */
     public static final String START_BITRATE_PNAME = "startBitrate";
 
+    /**
+     * The name of the "stereo" property.
+     */
+    public static final String STEREO_PNAME = "stereo";
+
+    /**
+     * The default value of the "startBitrate" property.
+     */
+    public static final int START_BITRATE_DEFAULT = 800;
+
     private final Map<String, String> properties;
 
     /**
@@ -139,15 +142,6 @@ public class JitsiMeetConfig
     public String getEnforcedVideobridge()
     {
         return properties.get(ENFORCED_BRIDGE);
-    }
-
-    /**
-     * Returns pre-configured JVB address or <tt>null</tt> if no bridge was
-     * passed in the config.
-     */
-    public String getPreConfiguredVideobridge()
-    {
-        return properties.get(BRIDGE_PNAME);
     }
 
     /**
@@ -288,6 +282,15 @@ public class JitsiMeetConfig
     public int getStartBitrate()
     {
         Integer startBitrate = getInt(START_BITRATE_PNAME);
-        return startBitrate == null ? -1 : startBitrate;
+        return startBitrate == null ? START_BITRATE_DEFAULT : startBitrate;
+    }
+
+    /**
+     * @return {@code true} iff stereo is enabled in this configuration.
+     */
+    public boolean stereoEnabled()
+    {
+        Boolean stereo = getBoolean(STEREO_PNAME);
+        return stereo != null && stereo;
     }
 }

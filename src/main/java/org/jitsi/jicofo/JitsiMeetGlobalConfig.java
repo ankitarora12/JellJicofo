@@ -16,14 +16,10 @@
  * limitations under the License.
  */
 package org.jitsi.jicofo;
-
 import org.jitsi.jicofo.auth.ClientAuthenticationAuthority;
-import org.jitsi.service.configuration.ConfigurationService;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
-
-import net.java.sip.communicator.util.Logger;
-import net.java.sip.communicator.util.ServiceUtils;
+import net.java.sip.communicator.util.*;
+import org.jitsi.service.configuration.*;
+import org.osgi.framework.*;
 
 /**
  * This class gathers config properties related to all conferences served by
@@ -31,50 +27,65 @@ import net.java.sip.communicator.util.ServiceUtils;
  *
  * @author Pawel Domas
  */
-public class JitsiMeetGlobalConfig {
-	/**
-	 * The logger instance used by this class.
-	 */
-	private final static Logger logger = Logger.getLogger(JitsiMeetGlobalConfig.class);
+public class JitsiMeetGlobalConfig
+{
+    /**
+     * The logger instance used by this class.
+     */
+    private final static Logger logger
+        = Logger.getLogger(JitsiMeetGlobalConfig.class);
 
-	/**
-	 * The name of configuration property that sets {@link #maxSSRCsPerUser}.
-	 */
-	private final static String MAX_SSRC_PER_USER_CONFIG_PNAME = "org.jitsi.jicofo.MAX_SSRC_PER_USER";
+    /**
+     * The name of configuration property that enables the {@link LipSyncHack}.
+     */
+    private final static String ENABLE_LIPSYNC_CONFIG_PNAME
+        = "org.jitsi.jicofo.ENABLE_LIPSYNC";
 
-	/**
-	 * The default value for {@link #maxSSRCsPerUser}.
-	 */
-	private final static int DEFAULT_MAX_SSRC_PER_USER = 20;
+    /**
+     * The name of configuration property that sets {@link #maxSSRCsPerUser}.
+     */
+    private final static String MAX_SSRC_PER_USER_CONFIG_PNAME
+        = "org.jitsi.jicofo.MAX_SSRC_PER_USER";
 
-	/**
-	 * The name of the config property which specifies how long we're going to
-	 * wait for Jibri to start recording from the time it accepted START request
-	 */
-	private static final String PENDING_TIMEOUT_PROP_NAME = "org.jitsi.jicofo.jibri.PENDING_TIMEOUT";
+    /**
+     * The default value for {@link #maxSSRCsPerUser}.
+     */
+    private final static int DEFAULT_MAX_SSRC_PER_USER = 20;
 
-	/**
-	 * The default value for {@link #PENDING_TIMEOUT_PROP_NAME}.
-	 */
-	private static final int DEFAULT_PENDING_TIMEOUT = 30;
+    /**
+     * The name of the config property which specifies how long we're going to
+     * wait for Jibri to start recording from the time it accepted START request
+     */
+    private static final String JIBRI_PENDING_TIMEOUT_PROP_NAME
+        = "org.jitsi.jicofo.jibri.PENDING_TIMEOUT";
 
-	/**
-	 * Tells how many seconds we're going to wait for the Jibri to start
-	 * recording. If set to <tt>-1</tt> it means that these timeouts are
-	 * disabled in the current session.
-	 */
-	private int jibriPendingTimeout;
+    /**
+     * The default value for {@link #JIBRI_PENDING_TIMEOUT_PROP_NAME}.
+     */
+    private static final int JIBRI_DEFAULT_PENDING_TIMEOUT = 90;
 
-	/**
-	 * Maximal amount of SSRCs per media that can be advertised by conference
-	 * participant.
-	 */
-	private int maxSSRCsPerUser;
+    /**
+     * If set to <tt>true</tt> enables {@link LipSyncHack}.
+     */
+    private boolean isLipSyncEnabled;
 
-	/**
-	 * OSGi service registration instance.
-	 */
-	private ServiceRegistration<JitsiMeetGlobalConfig> serviceRegistration;
+    /**
+     * Tells how many seconds we're going to wait for the Jibri to start
+     * recording. If set to <tt>-1</tt> it means that these timeouts are
+     * disabled in the current session.
+     */
+    private int jibriPendingTimeout;
+
+    /**
+     * Maximal amount of SSRCs per media that can be advertised by
+     * conference participant.
+     */
+    private int maxSSRCsPerUser;
+
+    /**
+     * OSGi service registration instance.
+     */
+    private ServiceRegistration<JitsiMeetGlobalConfig> serviceRegistration;
 
 	/**
 	 * Client for conference creation request .
@@ -83,98 +94,126 @@ public class JitsiMeetGlobalConfig {
 	
 	
 
-	/**
-	 * Runs <tt>JitsiMeetGlobalConfig</tt> service on given OSGi context.
-	 * 
-	 * @param ctx
-	 *            the OSGi context to which new service instance will be bound.
-	 * @return an instance of newly created and registered global config service
-	 */
-	static JitsiMeetGlobalConfig startGlobalConfigService(BundleContext ctx) {
-		JitsiMeetGlobalConfig config = new JitsiMeetGlobalConfig();
+    /**
+     * Runs <tt>JitsiMeetGlobalConfig</tt> service on given OSGi context.
+     * @param ctx the OSGi context to which new service instance will be bound.
+     * @return an instance of newly created and registered global config service
+     */
+    static JitsiMeetGlobalConfig startGlobalConfigService(BundleContext ctx)
+    {
+        JitsiMeetGlobalConfig config = new JitsiMeetGlobalConfig();
 
-		config.serviceRegistration = ctx.registerService(JitsiMeetGlobalConfig.class, config, null);
+        config.serviceRegistration
+            = ctx.registerService(JitsiMeetGlobalConfig.class, config, null);
 
-		ConfigurationService configService = ServiceUtils.getService(ctx, ConfigurationService.class);
+        ConfigurationService configService
+            = ServiceUtils.getService(ctx, ConfigurationService.class);
 		
 		clientAuthenticationAuthority = new ClientAuthenticationAuthority();
 
-		if (configService == null)
-			throw new RuntimeException("ConfigService not found !");
+        if (configService == null)
+            throw new RuntimeException("ConfigService not found !");
 
-		config.init(configService);
+        config.init(configService);
 
-		return config;
-	}
+        return config;
+    }
 
-	/**
-	 * Obtains <tt>JitsiMeetGlobalConfig</tt> from given OSGi instance.
-	 *
-	 * @param bc
-	 *            the context for which we're going to obtain global config
-	 *            instance.
-	 *
-	 * @return <tt>JitsiMeetGlobalConfig</tt> if one is currently registered as
-	 *         a service in given OSGi context or <tt>null</tt> otherwise.
-	 */
-	public static JitsiMeetGlobalConfig getGlobalConfig(BundleContext bc) {
-		return ServiceUtils.getService(bc, JitsiMeetGlobalConfig.class);
-	}
+    /**
+     * Obtains <tt>JitsiMeetGlobalConfig</tt> from given OSGi instance.
+     *
+     * @param bc the context for which we're going to obtain global config
+     *           instance.
+     *
+     * @return <tt>JitsiMeetGlobalConfig</tt> if one is currently registered as
+     *         a service in given OSGi context or <tt>null</tt> otherwise.
+     */
+    public static JitsiMeetGlobalConfig getGlobalConfig(BundleContext bc)
+    {
+        return ServiceUtils.getService(bc, JitsiMeetGlobalConfig.class);
+    }
 
-	public JitsiMeetGlobalConfig() {
+    private JitsiMeetGlobalConfig()
+    {
 
-	}
+    }
 
-	/**
-	 * Initializes this instance.
-	 *
-	 * @param configService
-	 *            <tt>ConfigService</tt> the configuration service which will be
-	 *            used to obtain values.
-	 */
-	private void init(ConfigurationService configService) {
-		this.maxSSRCsPerUser = configService.getInt(MAX_SSRC_PER_USER_CONFIG_PNAME, DEFAULT_MAX_SSRC_PER_USER);
+    /**
+     * Initializes this instance.
+     *
+     * @param configService <tt>ConfigService</tt> the configuration service
+     *        which will be used to obtain values.
+     */
+    private void init(ConfigurationService configService)
+    {
+        this.maxSSRCsPerUser
+            = configService.getInt(
+                    MAX_SSRC_PER_USER_CONFIG_PNAME, DEFAULT_MAX_SSRC_PER_USER);
 
-		jibriPendingTimeout = configService.getInt(PENDING_TIMEOUT_PROP_NAME, DEFAULT_PENDING_TIMEOUT);
+        jibriPendingTimeout
+            = configService.getInt(
+                    JIBRI_PENDING_TIMEOUT_PROP_NAME,
+                    JIBRI_DEFAULT_PENDING_TIMEOUT);
 
-		if (jibriPendingTimeout > 0) {
-			logger.info("Jibri requests in PENDING state will be timed out after: " + jibriPendingTimeout + " seconds");
-		} else {
-			logger.warn("Jibri PENDING timeouts are disabled");
-		}
-	}
+        if (jibriPendingTimeout > 0)
+        {
+            logger.info(
+                    "Jibri requests in PENDING state will be timed out after: "
+                        + jibriPendingTimeout + " seconds");
+        }
+        else
+        {
+            logger.warn("Jibri PENDING timeouts are disabled");
+        }
 
-	/**
-	 * Unregisters this service instance from OSGi context.
-	 */
-	void stopGlobalConfigService() {
-		if (serviceRegistration != null) {
-			serviceRegistration.unregister();
-			serviceRegistration = null;
-		}
-	}
+        isLipSyncEnabled
+            = configService.getBoolean(ENABLE_LIPSYNC_CONFIG_PNAME, false);
 
-	/**
-	 * Returns maximal amount of SSRCs per media that can be advertised by
-	 * conference participant.
-	 *
-	 * @return <tt>int</tt> value - see above.
-	 */
-	public int getMaxSSRCsPerUser() {
-		return maxSSRCsPerUser;
-	}
+        if (isLipSyncEnabled)
+            logger.info("Lip-sync hack is enabled !");
+    }
 
-	/**
-	 * Tells how many seconds we're going to wait for the Jibri to start
-	 * recording. If set to <tt>-1</tt> it means that these timeouts are
-	 * disabled in the current session.
-	 *
-	 * @return <tt>int</tt> which is the number of seconds we wait for the Jibri
-	 *         to start recording after it accepted our request.
-	 */
-	public int getJibriPendingTimeout() {
-		return jibriPendingTimeout;
-	}
-	
+    /**
+     * Unregisters this service instance from OSGi context.
+     */
+    void stopGlobalConfigService()
+    {
+        if (serviceRegistration != null)
+        {
+            serviceRegistration.unregister();
+            serviceRegistration = null;
+        }
+    }
 
+    /**
+     * Returns maximal amount of SSRCs per media that can be advertised by
+     * conference participant.
+     *
+     * @return <tt>int</tt> value - see above.
+     */
+    public int getMaxSSRCsPerUser()
+    {
+        return maxSSRCsPerUser;
+    }
+
+    /**
+     * Returns <tt>true</tt> if {@link LipSyncHack} should be enabled.
+     */
+    public boolean isLipSyncEnabled()
+    {
+        return isLipSyncEnabled;
+    }
+
+    /**
+     * Tells how many seconds we're going to wait for the Jibri to start
+     * recording. If set to <tt>-1</tt> it means that these timeouts are
+     * disabled in the current session.
+     *
+     * @return <tt>int</tt> which is the number of seconds we wait for the Jibri
+     *         to start recording after it accepted our request.
+     */
+    public int getJibriPendingTimeout()
+    {
+        return jibriPendingTimeout;
+    }
 }

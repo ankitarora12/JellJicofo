@@ -17,24 +17,18 @@
  */
 package org.jitsi.jicofo.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import mock.*;
+import net.java.sip.communicator.util.*;
+import org.jitsi.impl.protocol.xmpp.extensions.*;
+import org.jitsi.jicofo.*;
 
-import org.jitsi.impl.protocol.xmpp.extensions.ConferenceIq;
-import org.jitsi.impl.protocol.xmpp.extensions.SessionInvalidPacketExtension;
-import org.jitsi.jicofo.FocusBundleActivator;
-import org.jitsi.jicofo.OSGiHandler;
-import org.jitsi.jicofo.xmpp.FocusComponent;
-import org.jivesoftware.smack.packet.IQ;
-import org.jivesoftware.smack.packet.XMPPError;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.jitsi.jicofo.xmpp.*;
+import org.jivesoftware.smack.packet.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.junit.runners.*;
 
-import mock.MockMainMethodActivator;
-import net.java.sip.communicator.util.ServiceUtils;
+import static org.junit.Assert.*;
 
 /**
  * FIXME: tests have to be run separately or there are problems with OSGi
@@ -46,7 +40,7 @@ import net.java.sip.communicator.util.ServiceUtils;
 @RunWith(JUnit4.class)
 public class AuthenticationAuthorityTest
 {
-    static OSGiHandler osgi = new OSGiHandler();
+    static OSGiHandler osgi = OSGiHandler.getInstance();
 
     // This is called inside of the tests here
     //@BeforeClass

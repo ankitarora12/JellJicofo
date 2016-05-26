@@ -47,7 +47,6 @@ class ShibbolethHandler
     /**
      * The logger instance used by Shibboleth handler.
      */
-	
     private static final Logger logger
             = Logger.getLogger(ShibbolethHandler.class);
 
